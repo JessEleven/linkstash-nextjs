@@ -8,9 +8,9 @@ const roboto = Roboto({
 })
 
 export const metadata = {
-  title: 'LinkStash',
+  title: 'Linkstash',
   icons: [{ rel: 'icon', url: '/logo.svg' }],
-  description: 'LinkStash created with next.js'
+  description: 'Linkstash created with next.js'
 }
 
 export default function RootLayout ({ children }) {

@@ -1,0 +1,7 @@
+.input {
+  @apply px-4 py-2 rounded-sm outline outline-neutral-600 focus:outline focus:outline-slate-500
+}
+
+.button {
+  @apply mt-3 text-neutral-900 py-2 rounded-sm duration-200 ease-in-out transition-colors bg-neutral-100 hover:bg-neutral-200/90 font-medium
+}

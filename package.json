@@ -1,17 +1,22 @@
 {
   "name": "linkstash-nextjs",
   "description": "To save those links and always have them at hand.",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-2": "cross-env NODE_NO_WARNINGS=1 next dev"
+    "dev-2": "cross-env NODE_NO_WARNINGS=1 next dev",
+    "db:push": "npx drizzle-kit push",
+    "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.0.16",
+    "better-auth": "1.2.4",
+    "dotenv": "16.4.7",
+    "drizzle-orm": "0.41.0",
     "next": "14.2.4",
     "postcss": "8.5.3",
     "react": "18",
@@ -20,6 +25,8 @@
   },
   "devDependencies": {
     "cross-env": "7.0.3",
+    "drizzle-kit": "0.30.5",
+    "pg": "8.14.1",
     "standard": "17.1.2"
   },
   "eslintConfig": {

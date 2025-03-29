@@ -1,7 +1,7 @@
 {
   "name": "linkstash-nextjs",
   "description": "To save those links and always have them at hand.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,8 @@
     "lint": "next lint",
     "dev-2": "cross-env NODE_NO_WARNINGS=1 next dev",
     "db:push": "npx drizzle-kit push",
-    "db:studio": "npx drizzle-kit studio"
+    "db:studio": "npx drizzle-kit studio",
+    "db:schema": "npx @better-auth/cli generate --config src/libs/auth.js"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.0.16",
@@ -36,5 +37,13 @@
     "name": "Jesús Rengifo Mendoza",
     "url": "https://github.com/JessEleven"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }

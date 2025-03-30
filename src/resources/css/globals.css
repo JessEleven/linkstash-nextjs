@@ -7,3 +7,7 @@ input:-webkit-autofill:focus {
   -webkit-text-fill-color: #fafafa;
   transition: background-color 9999s ease-in-out 0s;
 }
+
+.hover-icon {
+  @apply p-1.5 border border-neutral-500 rounded-sm hover:bg-neutral-900/75 duration-200 transition-colors ease-in-out
+}

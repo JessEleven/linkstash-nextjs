@@ -1,9 +1,10 @@
-import AppLogo from '@/components/app-logo'
+import Nav from '@/components/nav'
 
-export default function Home () {
+export default function HomePage () {
   return (
-    <main className='flex items-center justify-center mt-7 gap-x-1.5'>
-      <AppLogo />
+    <main className='mx-5 md:mx-8'>
+      <Nav />
+      <h1 className='text-center font-medium'>Linkstash</h1>
     </main>
   )
 }

@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Logo from '../../public/logo.svg'
+import Logo from '../../../public/logo.svg'
 
 export default function AppLogo () {
   return (
-    <>
+    <div className='flex items-center gap-x-1.5'>
       <Image
         src={Logo}
         alt='Linkstash'
@@ -11,6 +11,6 @@ export default function AppLogo () {
         priority
       />
       <h3 className='text-center text-xl md:text-2xl font-medium'>Linkstash</h3>
-    </>
+    </div>
   )
 }

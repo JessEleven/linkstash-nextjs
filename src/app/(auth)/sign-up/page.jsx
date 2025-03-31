@@ -30,7 +30,7 @@ export default function SignUpPage () {
         },
         onSuccess: async () => {
           console.log('Sign up successful!')
-          router.push('/dashboard')
+          router.push('/overview')
         },
         onError: (ctx) => {
           console.log('Error:', ctx)
@@ -41,12 +41,15 @@ export default function SignUpPage () {
 
   return (
     <main className='flex place-content-center'>
-      <div className='flex items-center justify-center h-screen w-full md:w-[372px] mx-7 md:mx-0'>
+      <div className='flex flex-col justify-center h-screen w-full md:w-[372px] mx-7 md:mx-0'>
         <form onSubmit={handleSubmit} className='flex flex-col space-y-4 text-sm w-full'>
-          <Link translate='no' href='/' className='flex items-center justify-center gap-x-1.5'>
-            <AppLogo />
-          </Link>
-          <h3 className='text-base'>Create a new account</h3>
+          <div className='mb-4 flex flex-col items-center justify-center gap-x-1.5'>
+            <Link translate='no' href='/'>
+              <AppLogo />
+            </Link>
+          </div>
+          <h3 className='mb-4 text-base'>Create a new account</h3>
+
           <div className='flex flex-col'>
             <label htmlFor='name' className='mb-1.5'>Name</label>
             <input

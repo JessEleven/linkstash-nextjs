@@ -1,14 +1,14 @@
 {
   "name": "linkstash-nextjs",
   "description": "To save those links and always have them at hand.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 1176",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-2": "cross-env NODE_NO_WARNINGS=1 next dev",
+    "dev-2": "cross-env NODE_NO_WARNINGS=1 next dev -p 1176",
     "db:push": "npx drizzle-kit push",
     "db:studio": "npx drizzle-kit studio",
     "db:schema": "npx @better-auth/cli generate --config src/libs/auth.js"

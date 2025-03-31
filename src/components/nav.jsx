@@ -43,8 +43,8 @@ export default async function Nav () {
             {session
               ? (
                 <>
-                  <li className='btn-bg'>
-                    <Link href='/dashboard'>
+                  <li>
+                    <Link href='/overview' className='btn-bg'>
                       Dashborad
                     </Link>
                   </li>

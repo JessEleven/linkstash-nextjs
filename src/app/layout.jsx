@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout ({ children }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${roboto.className} bg-[#25272e] text-neutral-50`}>
+      <body className={`${roboto.className} bg-[#25272e] text-neutral-50 tracking-wide`}>
         {children}
       </body>
     </html>

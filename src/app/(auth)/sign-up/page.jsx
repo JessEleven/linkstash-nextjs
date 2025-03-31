@@ -23,20 +23,25 @@ export default function SignUpPage () {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    startTransition(async () => {
-      await authClient.signUp.email(formData, {
-        onRequest: () => {
-          console.log('Request sent...')
-        },
-        onSuccess: async () => {
-          console.log('Sign up successful!')
-          router.push('/overview')
-        },
-        onError: (ctx) => {
-          console.log('Error:', ctx)
-        }
+    console.log('Sending sign up request:', formData)
+    try {
+      startTransition(async () => {
+        await authClient.signUp.email(formData, {
+          onRequest: () => {
+            console.log('Request sent...')
+          },
+          onSuccess: async () => {
+            console.log('Sign up successful!')
+            router.push('/ovw')
+          },
+          onError: (ctx) => {
+            console.log('Error:', ctx)
+          }
+        })
       })
-    })
+    } catch (error) {
+      console.error('Unexpected error:', error)
+    }
   }
 
   return (
@@ -94,8 +99,8 @@ export default function SignUpPage () {
               </button>
             </div>
           </div>
-          <button type='submit' className='btn-session flex items-center justify-center gap-x-0.5'>
-            {isPending ? <><LoaderIcon className='size-5 animate-spin' /> <span>Signing Up...</span> </> : 'Sign Up'}
+          <button type='submit' className='btn-session flex items-center justify-center gap-x-1'>
+            {isPending ? <><LoaderIcon className='size-5 animate-spin' /> <span>Signing Up...</span> </> : <span>Sign Up</span>}
           </button>
         </form>
       </div>

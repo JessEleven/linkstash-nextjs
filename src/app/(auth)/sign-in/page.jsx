@@ -23,20 +23,25 @@ export default function SignInPage () {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    startTransition(async () => {
-      await authClient.signIn.email(formData, {
-        onRequest: () => {
-          console.log('Request sent...')
-        },
-        onSuccess: () => {
-          console.log('Sign In successful!')
-          router.push('/overview')
-        },
-        onError: (ctx) => {
-          console.log('Error:', ctx)
-        }
+    console.log('Sending sign in request:', formData)
+    try {
+      startTransition(async () => {
+        await authClient.signIn.email(formData, {
+          onRequest: () => {
+            console.log('Request sent...')
+          },
+          onSuccess: () => {
+            console.log('Sign In successful!')
+            router.push('/ovw')
+          },
+          onError: (ctx) => {
+            console.log('Error:', ctx)
+          }
+        })
       })
-    })
+    } catch (error) {
+      console.error('Unexpected error:', error)
+    }
   }
 
   return (
@@ -81,8 +86,8 @@ export default function SignInPage () {
               </button>
             </div>
           </div>
-          <button className='btn-session flex items-center justify-center gap-x-0.5'>
-            {isPending ? <><LoaderIcon className='size-5 animate-spin' /> <span>Signing In...</span> </> : 'Sign In'}
+          <button className='btn-session flex items-center justify-center gap-x-1'>
+            {isPending ? <><LoaderIcon className='size-5 animate-spin' /> <span>Signing In...</span> </> : <span>Sign In</span>}
           </button>
         </form>
       </div>

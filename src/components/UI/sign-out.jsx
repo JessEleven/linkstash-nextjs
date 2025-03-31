@@ -13,7 +13,7 @@ async function handleSignOut () {
 export default function SignOut () {
   return (
     <form action={handleSignOut}>
-      <button type='submit' className='btn-border cursor-pointer'>Sign Out</button>
+      <button type='submit' className='btn-bg cursor-pointer'>Sign Out</button>
     </form>
   )
 }

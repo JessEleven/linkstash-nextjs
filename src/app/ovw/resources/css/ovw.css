@@ -1,0 +1,3 @@
+.ovw-border {
+  @apply border border-neutral-500 rounded-[5px]
+}

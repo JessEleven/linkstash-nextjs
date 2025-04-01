@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./auth.css";
+@import "../../app/ovw/resources/css/ovw.css";
 
 .hover-icon {
   @apply p-1.5 border border-neutral-500 rounded-sm hover:bg-neutral-900/75 duration-200 transition-colors ease-in-out

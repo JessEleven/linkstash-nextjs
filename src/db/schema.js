@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -49,7 +49,7 @@ export const verification = pgTable('verification', {
 
 export const linkbox = pgTable('linkbox', {
   id: uuid('id').defaultRandom().primaryKey(),
-  linkName: text('link_name').notNull().unique(),
+  linkName: text('link_name').notNull(),
   originalUrl: text('original_url').notNull(),
   shortUrl: text('short_url'),
   visits: integer('visits').default(0).notNull(),
@@ -58,7 +58,9 @@ export const linkbox = pgTable('linkbox', {
   deletedAt: timestamp('deleted_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
-})
+}, (table) => ({
+  uniqueLinkPerUser: unique().on(table.userId, table.linkName)
+}))
 
 export const schema = { user, session, account, verification, linkbox }
 

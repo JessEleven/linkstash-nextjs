@@ -1,4 +1,5 @@
-import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -46,4 +47,25 @@ export const verification = pgTable('verification', {
   updatedAt: timestamp('updated_at')
 })
 
-export const schema = { user, session, account, verification }
+export const linkbox = pgTable('linkbox', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  linkName: text('link_name').notNull().unique(),
+  originalUrl: text('original_url').notNull(),
+  shortUrl: text('short_url'),
+  visits: integer('visits').default(0).notNull(),
+  favorite: boolean('favorite').default(false).notNull(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  deletedAt: timestamp('deleted_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
+})
+
+export const schema = { user, session, account, verification, linkbox }
+
+export const usersRelated = relations(user, ({ many }) => ({
+  linkbox: many(linkbox)
+}))
+
+export const linkboxRelated = relations(linkbox, ({ one }) => ({
+  user: one(user, { fields: [linkbox.userId], references: [user.id] })
+}))

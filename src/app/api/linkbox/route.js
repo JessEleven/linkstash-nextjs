@@ -1,11 +1,25 @@
 import { db } from '@/db/drizzle'
 import { linkbox } from '@/db/schema'
+import { and, eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { NextResponse } from 'next/server'
 
 export async function POST (req) {
   try {
     const { linkName, originalUrl, userId } = await req.json()
+
+    const existingLink = await db.select().from(linkbox).where(and(
+      eq(linkbox.linkName, linkName),
+      eq(linkbox.userId, userId)
+    )).limit(1)
+
+    if (existingLink.length > 0) {
+      return NextResponse.json({
+        success: false,
+        error: 'The link name is already in use by you'
+      }, { status: 400 })
+    }
+
     const shortCode = nanoid(15)
 
     const result = await db.insert(linkbox).values({
@@ -20,13 +34,6 @@ export async function POST (req) {
       data: result
     })
   } catch (error) {
-    // PostgreSQL error code for "single constraint violation"
-    if (error.code === '23505') {
-      return NextResponse.json({
-        success: false,
-        error: 'The link name is already in use'
-      }, { status: 400 })
-    }
     return NextResponse.json({
       success: false,
       error: error.message

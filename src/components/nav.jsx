@@ -47,11 +47,9 @@ export default async function Nav () {
               ? (
                 <>
                   <li>
-                    <div className='btn-bg'>
-                      <Link href='/ovw'>
-                        Overview
-                      </Link>
-                    </div>
+                    <Link href='/ovw' className='btn-bg block'>
+                      Overview
+                    </Link>
                   </li>
                   <li>
                     <SignOut />

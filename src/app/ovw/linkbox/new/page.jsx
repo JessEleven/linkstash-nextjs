@@ -51,8 +51,8 @@ export default function NewPage () {
                 onChange: () => setServerError(null)
               })}
             />
-            {errors.linkName && <p className='text-red-500/85 absolute top-[65px]'>{errors.linkName.message}</p>}
-            {serverError && <p className='text-red-500/85'>{serverError}</p>}
+            {errors.linkName && <p className='text-rose-500 absolute top-[65px]'>{errors.linkName.message}</p>}
+            {serverError && <p className='text-rose-500'>{serverError}</p>}
           </div>
 
           <div className='flex flex-col relative mt-[25px]'>
@@ -65,18 +65,18 @@ export default function NewPage () {
               className='input'
               {...register('originalUrl')}
             />
-            {errors.originalUrl && <p className='text-red-500/85 absolute top-[65px]'>{errors.originalUrl.message}</p>}
+            {errors.originalUrl && <p className='text-rose-500 absolute top-[65px]'>{errors.originalUrl.message}</p>}
           </div>
 
-          <div className='flex gap-x-5 mt-7'>
+          <div className='flex gap-x-5 mt-10'>
             <Link
               href='/ovw/linkbox'
-              className='w-full text-center mt-3 font-medium py-1.5 rounded-[5px] transition-colors ease-in-out
+              className='w-full text-center font-medium py-[7px] rounded-[5px] transition-colors ease-in-out
               duration-200 border border-neutral-500 hover:bg-neutral-700/50'
             >
               Cancel
             </Link>
-            <button type='submit' className='btn-session w-full text-center'>
+            <button type='submit' className='ovw-btn-hover py-[7px] w-full text-center font-medium'>
               Save
             </button>
           </div>

@@ -1,13 +1,11 @@
+import GetLinkboxes from '../components-ovw/get-linkboxes'
 import UserOptions from '../components-ovw/user-options'
 
-export default function LinkoxPage () {
+export default function LinkkoxPage () {
   return (
     <main>
       <UserOptions />
-
-      <div className='mt-4'>
-        List of links
-      </div>
+      <GetLinkboxes />
     </main>
   )
 }

@@ -7,6 +7,7 @@ import {
   LayoutGridIcon,
   LayoutListIcon,
   PlusIcon,
+  RefreshIcon,
   TextRecognitionIcon,
   WorldIcon
 } from '../resources/assets/user-optiones-icons'
@@ -17,7 +18,7 @@ export const options = [
   { label: 'Sort by visits', icon: <WorldIcon /> }
 ]
 
-export default function UserOptions () {
+export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(options[0].label)
 
@@ -63,12 +64,31 @@ export default function UserOptions () {
           )}
         </div>
 
-        <button type='button' aria-label='Layout grid icon' className='ovw-border p-[7px] cursor-pointer'>
+        <button
+          type='button'
+          aria-label='Layout grid icon'
+          className='ovw-border p-[7px] cursor-pointer'
+          onClick={() => onLayoutChange('grid')}
+        >
           <LayoutGridIcon />
         </button>
 
-        <button type='button' aria-label='Layout list icon' className='ovw-border p-[7px] cursor-pointer'>
+        <button
+          type='button'
+          aria-label='Layout list icon'
+          className='ovw-border p-[7px] cursor-pointer'
+          onClick={() => onLayoutChange('list')}
+        >
           <LayoutListIcon />
+        </button>
+
+        <button
+          type='button'
+          aria-label='Refresh'
+          className='ovw-border p-[7px] cursor-pointer'
+          onClick={onRefresh}
+        >
+          <RefreshIcon className={`${isRefreshing && 'animate-spin'}`} />
         </button>
 
         <Link href='/ovw/linkbox/new' className='flex items-center gap-x-1 rounded-[5px] text-neutral-900 bg-neutral-200 px-4 py-2'>

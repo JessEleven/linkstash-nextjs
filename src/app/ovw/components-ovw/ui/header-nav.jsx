@@ -6,6 +6,7 @@ import {
   BoxIcon,
   DashboardIcon
 } from '../../resources/assets/home-nav-icons'
+import { StarIcon } from '../../resources/assets/linkboxes-icons'
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     title: 'Linkbox',
     icon: <BoxIcon />,
     path: '/ovw/linkbox'
+  },
+  {
+    title: 'Favorite',
+    icon: <StarIcon />,
+    path: '/ovw/favorite'
   }
 ]
 

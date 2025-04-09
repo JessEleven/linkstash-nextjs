@@ -2,9 +2,9 @@
 
 import GetLinkboxes from '../components-ovw/get-linkboxes'
 import UserOptions from '../components-ovw/user-options'
-import { useLinkboxContext } from '../context/linkbox-context'
+import { useLinkboxContext } from '@/app/ovw/context/linkbox-context'
 
-export default function LinkkoxPage () {
+export default function FavoritePage () {
   const {
     refreshFlag,
     isRefreshing,

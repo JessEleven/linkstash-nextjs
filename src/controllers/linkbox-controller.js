@@ -4,6 +4,7 @@ export const getLinkboxes = async () => {
   try {
     const response = await fetch('/api/linkbox', {
       method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
     })
 

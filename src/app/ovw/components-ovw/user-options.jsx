@@ -12,6 +12,7 @@ import {
   WorldIcon
 } from '../resources/assets/user-optiones-icons'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export const options = [
   { label: 'Sort by name', icon: <TextRecognitionIcon /> },
@@ -23,6 +24,7 @@ export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }
   const [value, setValue] = useState(options[0].label)
 
   const selectedOp = options.find(opt => opt.label === value) || options[0]
+  const pathname = usePathname()
 
   return (
     <div className='mt-5 block md:flex items-center justify-between gap-x-2.5 text-sm font-normal leading-3.5'>
@@ -91,9 +93,11 @@ export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }
           <RefreshIcon className={`${isRefreshing && 'animate-spin'}`} />
         </button>
 
-        <Link href='/ovw/linkbox/new' className='flex items-center gap-x-1 rounded-[5px] text-neutral-900 bg-neutral-200 px-4 py-2'>
-          <PlusIcon /> <span className='hidden md:flex'>Add linkox</span>
-        </Link>
+        {pathname === '/ovw/linkbox' && (
+          <Link href='/ovw/linkbox/new' className='ovw-btn-hover flex items-center gap-x-1 py-2'>
+            <PlusIcon /> <span className='hidden md:flex'>Add linkbox</span>
+          </Link>
+        )}
       </div>
     </div>
   )

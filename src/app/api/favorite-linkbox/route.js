@@ -2,7 +2,6 @@ import { db } from '@/db/drizzle'
 import { linkbox } from '@/db/schema'
 import { auth } from '@/libs/auth'
 import { and, asc, eq } from 'drizzle-orm'
-import { nanoid } from 'nanoid'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -24,17 +23,24 @@ export async function GET (req) {
     }
 
     // The logged-in user's links are queried
-    const userLinks = await db.select().from(linkbox)
-      .where(and(eq(linkbox.userId, userId.id), eq(linkbox.favorite, false)))
+    const userFvaoriteLinks = await db.select().from(linkbox)
+      .where(and(eq(linkbox.userId, userId.id), eq(linkbox.favorite, true)))
       .orderBy(asc(linkbox.createdAt))
 
-    // console.log({ name: userId.name, data: userLinks })
+    if (userFvaoriteLinks.length <= 0) {
+      return NextResponse.json({
+        success: false,
+        error: 'No links added to favorites'
+      }, { status: 400 })
+    }
+
+    // console.log({ name: userId.name, data: userFvaoriteLinks })
 
     return NextResponse.json({
       success: true,
       name: userId.name,
       email: userId.email,
-      data: userLinks
+      data: userFvaoriteLinks
     })
   } catch (error) {
     // console.error('Error fetching user links')
@@ -45,35 +51,32 @@ export async function GET (req) {
   }
 }
 
-export async function POST (req) {
+export async function PATCH (req) {
   try {
-    const { linkName, originalUrl, userId } = await req.json()
+    // The authenticated user's session is retrieved
+    const authUserId = await auth.api.getSession(
+      { headers: await headers() }
+    )
+    const userId = authUserId?.user
+    const { id, favorite } = await req.json()
 
-    const existingLink = await db.select().from(linkbox)
-      .where(and(
-        eq(linkbox.linkName, linkName),
-        eq(linkbox.userId, userId)
-      )).limit(1)
-
-    if (existingLink.length > 0) {
+    if (!userId.id) {
       return NextResponse.json({
         success: false,
-        error: 'The link name is already in use by you'
-      }, { status: 400 })
+        error: 'User is not authenticated'
+      }, { status: 401 })
     }
 
-    const shortCode = nanoid(15)
-
-    const result = await db.insert(linkbox).values({
-      linkName,
-      shortUrl: shortCode,
-      originalUrl,
-      userId
-    }).returning({ insertedId: linkbox.id })
+    await db
+      .update(linkbox)
+      .set({ favorite })
+      .where(and(eq(linkbox.id, id), eq(linkbox.userId, userId.id)))
 
     return NextResponse.json({
       success: true,
-      data: result
+      name: userId.name,
+      email: userId.email,
+      message: `Linkbox ${favorite ? 'marked as' : 'removed from'} favorite`
     })
   } catch (error) {
     return NextResponse.json({

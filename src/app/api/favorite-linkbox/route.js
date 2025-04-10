@@ -1,7 +1,7 @@
 import { db } from '@/db/drizzle'
 import { linkbox } from '@/db/schema'
 import { auth } from '@/libs/auth'
-import { and, asc, eq } from 'drizzle-orm'
+import { and, asc, desc, eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -21,11 +21,21 @@ export async function GET (req) {
         error: 'User is not authenticated'
       }, { status: 401 })
     }
+    const url = new URL(req.url)
+    const sortBy = url.searchParams.get('sortBy') || 'name'
+
+    let orderByCondition
+
+    if (sortBy === 'name') {
+      orderByCondition = asc(linkbox.linkName)
+    } else if (sortBy === 'visits') {
+      orderByCondition = desc(linkbox.visits)
+    }
 
     // The logged-in user's links are queried
     const userFvaoriteLinks = await db.select().from(linkbox)
       .where(and(eq(linkbox.userId, userId.id), eq(linkbox.favorite, true)))
-      .orderBy(asc(linkbox.createdAt))
+      .orderBy(orderByCondition)
 
     if (userFvaoriteLinks.length <= 0) {
       return NextResponse.json({

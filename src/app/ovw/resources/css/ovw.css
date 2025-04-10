@@ -1,5 +1,5 @@
 .ovw-border {
-  @apply border border-neutral-500 rounded-[5px]
+  @apply border border-neutral-500 rounded-[5px] hover:bg-neutral-700/50 duration-200 transition-colors ease-in-out
 }
 
 .ovw-btn-hover {

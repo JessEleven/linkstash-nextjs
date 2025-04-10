@@ -11,20 +11,26 @@ import {
   TextRecognitionIcon,
   WorldIcon
 } from '../resources/assets/user-optiones-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { LoaderIcon } from '@/resources/assets/global-icons'
 
 export const options = [
-  { label: 'Sort by name', icon: <TextRecognitionIcon /> },
-  { label: 'Sort by visits', icon: <WorldIcon /> }
+  { id: 'name', label: 'Sort by name', icon: <TextRecognitionIcon /> },
+  { id: 'visits', label: 'Sort by visits', icon: <WorldIcon /> }
 ]
 
-export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }) {
+export default function UserOptions ({ isRefreshing, sortBy, onRefresh, onLayoutChange, handleSortChange }) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(options[0].label)
 
-  const selectedOp = options.find(opt => opt.label === value) || options[0]
   const pathname = usePathname()
+  // console.log({ sorted_by: sortBy })
+
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   return (
     <div className='mt-5 block md:flex items-center justify-between gap-x-2.5 text-sm font-normal leading-3.5'>
@@ -42,16 +48,22 @@ export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }
             onClick={() => setOpen(!open)}
             className='ovw-border flex items-center justify-between w-full px-4 py-[7px] cursor-pointer'
           >
-            <span className='flex items-center gap-1'>{selectedOp.label} {selectedOp.icon}</span> <ChevronDownIcon />
+            <span className='flex items-center gap-1'>
+              {hasMounted
+                ? (sortBy === 'name'
+                    ? <>Sort by name <TextRecognitionIcon /></>
+                    : <>Sort by visits <WorldIcon /></>)
+                : <LoaderIcon className='size-4 animate-spin' />}
+            </span> <ChevronDownIcon />
           </button>
 
           {open && (
             <article className='absolute z-40 ovw-border flex flex-col w-full top-11 px-4 py-2 bg-[#2b2c32]'>
               {options.map((op) => (
                 <button
-                  key={op.label}
+                  key={op.id}
                   type='button' onClick={() => {
-                    setValue(op.label)
+                    handleSortChange(op.id === 'name' ? 'name' : 'visits')
                     setOpen(false)
                   }}
                   className='flex items-center justify-between gap-x-1 py-1 cursor-pointer'
@@ -59,7 +71,7 @@ export default function UserOptions ({ onRefresh, onLayoutChange, isRefreshing }
                   <span className='flex items-center gap-x-1'>
                     {op.label} {op.icon}
                   </span>
-                  {op.label === value && <CheckIcon className='text-teal-500' />}
+                  {op.id === sortBy && <CheckIcon className='text-teal-500' />}
                 </button>
               ))}
             </article>

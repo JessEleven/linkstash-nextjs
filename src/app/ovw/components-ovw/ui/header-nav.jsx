@@ -21,7 +21,7 @@ const routes = [
   },
   {
     title: 'Favorite',
-    icon: <StarIcon />,
+    icon: <StarIcon className='size-4' />,
     path: '/ovw/favorite'
   }
 ]

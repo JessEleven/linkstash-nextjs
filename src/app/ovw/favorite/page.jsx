@@ -9,21 +9,26 @@ export default function FavoritePage () {
     refreshFlag,
     isRefreshing,
     layout,
+    sortBy,
     handleRefresh,
     handleLayoutChange,
-    setIsRefreshing
+    setIsRefreshing,
+    handleSortChange
   } = useLinkboxContext()
 
   return (
     <>
       <UserOptions
         onRefresh={handleRefresh}
+        sortBy={sortBy}
         onLayoutChange={handleLayoutChange}
         isRefreshing={isRefreshing}
+        handleSortChange={handleSortChange}
       />
       <GetLinkboxes
         refresh={refreshFlag}
         layout={layout}
+        sortBy={sortBy}
         isRefreshing={setIsRefreshing}
       />
     </>

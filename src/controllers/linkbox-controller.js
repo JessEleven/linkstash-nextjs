@@ -1,8 +1,8 @@
 import { authClient } from '@/libs/auth-client'
 
-export const getLinkboxes = async () => {
+export const getLinkboxes = async (sortBy) => {
   try {
-    const response = await fetch('/api/linkbox', {
+    const response = await fetch(`/api/linkbox?sortBy=${sortBy}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'

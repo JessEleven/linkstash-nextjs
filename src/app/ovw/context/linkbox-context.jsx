@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use client'
 
 import { createContext, useContext, useState, useEffect } from 'react'
@@ -8,6 +9,17 @@ export const LinkboxContext = ({ children }) => {
   const [refreshFlag, setRefreshFlag] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [layout, setLayout] = useState('grid')
+  const [sortBy, setSortBy] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('sortBy') || 'name'
+    }
+    return 'name'
+  })
+
+  const handleSortChange = (newSortBy) => {
+    setSortBy(newSortBy)
+    localStorage.setItem('sortBy', newSortBy)
+  }
 
   useEffect(() => {
     const storeLayout = localStorage.getItem('layout')
@@ -31,9 +43,11 @@ export const LinkboxContext = ({ children }) => {
         refreshFlag,
         isRefreshing,
         layout,
+        sortBy,
         handleRefresh,
         handleLayoutChange,
-        setIsRefreshing
+        setIsRefreshing,
+        handleSortChange
       }}
     >
       {children}

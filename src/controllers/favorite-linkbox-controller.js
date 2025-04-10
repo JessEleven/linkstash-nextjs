@@ -1,6 +1,6 @@
-export const getFavoriteLinkboxes = async () => {
+export const getFavoriteLinkboxes = async (sortBy) => {
   try {
-    const response = await fetch('/api/favorite-linkbox', {
+    const response = await fetch(`/api/favorite-linkbox?sortBy=${sortBy}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'

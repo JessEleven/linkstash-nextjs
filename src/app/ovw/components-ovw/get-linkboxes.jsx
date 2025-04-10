@@ -8,6 +8,7 @@ import {
   EditIcon,
   ExternalLinkIcon,
   InboxOffIcon,
+  StarFilledIcon,
   StarIcon,
   TrashIcon
 } from '../resources/assets/linkboxes-icons'
@@ -16,13 +17,12 @@ import moment from 'moment'
 import { getFavoriteLinkboxes, toggleFavorite } from '@/controllers/favorite-linkbox-controller'
 import { usePathname } from 'next/navigation'
 
-export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
+export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing }) {
   const [links, setLinks] = useState([])
   const [favLinks, setFavLinks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const date = moment()
   const pathname = usePathname()
   const shortenerUrl = (code) => `${process.env.NEXT_PUBLIC_BASE_URL}/${code}`
   // links.forEach(link => console.log(link.originalUrl))
@@ -33,11 +33,11 @@ export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
         setLoading(true)
         isRefreshing(true)
         if (pathname === '/ovw/linkbox') {
-          const userLinks = await getLinkboxes()
+          const userLinks = await getLinkboxes(sortBy)
           setLinks(userLinks)
         }
         if (pathname === '/ovw/favorite') {
-          const userFavLinks = await getFavoriteLinkboxes()
+          const userFavLinks = await getFavoriteLinkboxes(sortBy)
           setFavLinks(userFavLinks)
         }
       } catch (error) {
@@ -46,10 +46,10 @@ export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
         setTimeout(() => {
           setLoading(false)
           isRefreshing(false)
-        }, 400)
+        }, 350)
       }
     })()
-  }, [refresh, pathname])
+  }, [refresh, pathname, sortBy])
 
   return (
     <main className='mb-10 relative'>
@@ -73,8 +73,8 @@ export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
               >
                 {(pathname === '/ovw/linkbox' ? links : pathname === '/ovw/favorite' ? favLinks : [])
                   .length > 0 ? (
-                      (pathname === '/ovw/linkbox' ? links : pathname === '/ovw/favorite' ? favLinks : []).map(
-                        (item) => {
+                      (pathname === '/ovw/linkbox' ? links : pathname === '/ovw/favorite' ? favLinks : [])
+                        .map((item) => {
                           const faviconUrl = `${new URL(item.originalUrl).origin}/favicon.ico`
 
                           return (
@@ -111,7 +111,7 @@ export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
                                       })
                                     }}
                                   >
-                                    <StarIcon />
+                                    {pathname === '/ovw/linkbox' ? <StarIcon className='size-[18px]' /> : <StarFilledIcon />}
                                   </button>
                                   {pathname !== '/ovw/favorite' && (
                                     <>
@@ -141,20 +141,25 @@ export default function GetLinkboxes ({ refresh, layout, isRefreshing }) {
                                 </div>
                                 <div className={`${layout === 'list' && 'flex justify-between'}`}>
                                   <p className='mt-1.5'>Visits {item.visits}</p>
-                                  <p className='mt-1.5'>{date.format('lll')}</p>
+                                  <p className='mt-1.5'>{moment(item.createdAt).format('lll')}</p>
                                 </div>
                               </div>
                             </article>
                           )
                         }
-                      )
+                        )
                     ) : (
                       <article className='flex justify-center w-full absolute top-28'>
-                        <div className='flex flex-col items-center px-14 py-10 border border-neutral-700 rounded-lg'>
+                        <div className='flex flex-col items-center px-10 md:px-14 py-10 border border-neutral-700 rounded-lg'>
                           <div className='border border-neutral-700 rounded-lg p-3 text-neutral-400'>
                             <InboxOffIcon />
                           </div>
-                          <h2 className='text-2xl font-medium mb-4'>No linkboxes found</h2>
+                          {pathname === '/ovw/linkbox' && (
+                            <h2 className='text-xl md:text-2xl font-medium mb-4'>No linkboxes found</h2>
+                          )}
+                          {pathname === '/ovw/favorite' && (
+                            <h2 className='text-xl md:text-2xl font-medium mb-4'>No favorite linkboxes found</h2>
+                          )}
                           <Link href='/ovw/linkbox/new' className='ovw-btn-hover py-[9px]'>
                             <span>Create a new linkbox</span>
                           </Link>

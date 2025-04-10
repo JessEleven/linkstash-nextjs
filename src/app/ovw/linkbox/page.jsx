@@ -9,21 +9,26 @@ export default function LinkkoxPage () {
     refreshFlag,
     isRefreshing,
     layout,
+    sortBy,
     handleRefresh,
     handleLayoutChange,
-    setIsRefreshing
+    setIsRefreshing,
+    handleSortChange
   } = useLinkboxContext()
 
   return (
     <>
       <UserOptions
+        isRefreshing={isRefreshing}
+        sortBy={sortBy}
         onRefresh={handleRefresh}
         onLayoutChange={handleLayoutChange}
-        isRefreshing={isRefreshing}
+        handleSortChange={handleSortChange}
       />
       <GetLinkboxes
         refresh={refreshFlag}
         layout={layout}
+        sortBy={sortBy}
         isRefreshing={setIsRefreshing}
       />
     </>

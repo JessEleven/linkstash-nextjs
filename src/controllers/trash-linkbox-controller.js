@@ -1,15 +1,13 @@
-import { authClient } from '@/libs/auth-client'
-
-export const getLinkboxes = async (sortBy) => {
+export const getTrashedLinkboxes = async () => {
   try {
-    const response = await fetch(`/api/linkbox?sortBy=${sortBy}`, {
+    const response = await fetch('/api/trash-linkbox', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include'
     })
 
     if (!response.ok) {
-      throw new Error('Failed to fetch user links')
+      throw new Error('Failed to fetch user trash links')
     }
     const result = await response.json()
 
@@ -18,44 +16,44 @@ export const getLinkboxes = async (sortBy) => {
     }
     return result.data
   } catch (error) {
-    console.error('Error fetching user linkboxes:', error)
+    console.error('Error fetching user trash links:', error)
     return []
   }
 }
 
-export const createLinkbox = async (formData) => {
+export const restoreLinkbox = async ({ id, onSuccess }) => {
   try {
-    const { data } = await authClient.getSession()
-    const authUserId = data?.user?.id
-
-    if (!authUserId) {
-      throw new Error('User is not authenticated')
-    }
-    const response = await fetch('/api/linkbox', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...formData,
-        userId: authUserId
-      })
-    })
-    const result = await response.json()
-
-    return result
-  } catch (error) {
-    console.error('Unexpected error:', error)
-    throw error
-  }
-}
-
-export const softDeleteLinkbox = async ({ id, onSuccess }) => {
-  try {
-    const response = await fetch('/api/linkbox', {
+    const response = await fetch('/api/trash-linkbox', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({ id })
     })
+
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || 'Can not restore from the trash')
+    }
+
+    if (onSuccess) onSuccess()
+
+    return result.data
+  } catch (error) {
+    // console.error('Error fetching user trash links:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+export const deleteLinkbox = async ({ id, onSuccess }) => {
+  try {
+    const response = await fetch('/api/trash-linkbox', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ id })
+    })
+
     const result = await response.json()
 
     if (!response.ok || !result.success) {

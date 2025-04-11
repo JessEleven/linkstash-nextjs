@@ -1,12 +1,11 @@
 import { db } from '@/db/drizzle'
 import { linkbox } from '@/db/schema'
 import { auth } from '@/libs/auth'
-import { and, asc, desc, eq, isNull } from 'drizzle-orm'
-import { nanoid } from 'nanoid'
+import { and, asc, eq, isNotNull } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-export async function GET (req) {
+export async function GET () {
   try {
     // The authenticated user's session is retrieved
     const authUserId = await auth.api.getSession(
@@ -22,81 +21,29 @@ export async function GET (req) {
         error: 'User is not authenticated'
       }, { status: 401 })
     }
-    const url = new URL(req.url)
-    const sortBy = url.searchParams.get('sortBy') || 'name'
-
-    let orderByCondition
-
-    if (sortBy === 'name') {
-      orderByCondition = asc(linkbox.linkName)
-    } else if (sortBy === 'visits') {
-      orderByCondition = desc(linkbox.visits)
-    }
 
     // The logged-in user's links are queried
-    const userLinks = await db.select().from(linkbox)
-      .where(and(
-        eq(linkbox.userId, userId.id),
-        eq(linkbox.favorite, false),
-        isNull(linkbox.deletedAt)))
-      .orderBy(orderByCondition)
+    const userTrashLinks = await db.select().from(linkbox)
+      .where(and(eq(linkbox.userId, userId.id), isNotNull(linkbox.deletedAt)))
+      .orderBy(asc(linkbox.deletedAt))
 
-    if (userLinks.length <= 0) {
+    if (userTrashLinks.length <= 0) {
       return NextResponse.json({
         success: false,
-        error: 'No links added'
+        error: 'No links added to the trash'
       }, { status: 404 })
     }
 
-    // console.log({ name: userId.name, data: userLinks })
-
+    // console.log({ data: userTrashLinks })
     return NextResponse.json({
       success: true,
       name: userId.name,
       email: userId.email,
-      total: userLinks.length,
-      data: userLinks
+      total: userTrashLinks.length,
+      data: userTrashLinks
     })
   } catch (error) {
-    // console.error('Error fetching user links')
-    return NextResponse.json({
-      success: false,
-      error: error.message
-    }, { status: 500 })
-  }
-}
-
-export async function POST (req) {
-  try {
-    const { linkName, originalUrl, userId } = await req.json()
-
-    const existingLink = await db.select().from(linkbox)
-      .where(and(
-        eq(linkbox.linkName, linkName),
-        eq(linkbox.userId, userId)
-      )).limit(1)
-
-    if (existingLink.length > 0) {
-      return NextResponse.json({
-        success: false,
-        error: 'The link name is already in use by you'
-      }, { status: 400 })
-    }
-
-    const shortCode = nanoid(12)
-
-    const result = await db.insert(linkbox).values({
-      linkName,
-      shortUrl: shortCode,
-      originalUrl,
-      userId
-    }).returning({ insertedId: linkbox.id })
-
-    return NextResponse.json({
-      success: true,
-      data: result
-    })
-  } catch (error) {
+    // console.error('Error fetching user trash links')
     return NextResponse.json({
       success: false,
       error: error.message
@@ -128,18 +75,57 @@ export async function PATCH (req) {
         error: 'Missing linkbox ID'
       }, { status: 400 })
     }
-    const deletedAt = new Date()
-
-    await db.update(linkbox)
-      .set({ deletedAt })
+    const restored = await db.update(linkbox)
+      .set({ deletedAt: null })
       .where(and(eq(linkbox.id, id), eq(linkbox.userId, userId.id)))
+      .returning()
 
     return NextResponse.json({
-      success: false,
-      message: 'Link moved to trash'
+      success: true,
+      data: restored
     })
   } catch (error) {
-    // console.error('Error fetching user links', error)
+    // console.error('Error fetching user restore links', error)
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 })
+  }
+}
+
+export async function DELETE (req) {
+  try {
+    // The authenticated user's session is retrieved
+    const authUserId = await auth.api.getSession(
+      { headers: await headers() }
+    )
+    const userId = authUserId?.user
+
+    // console.log({ userId: userId.id })
+
+    if (!userId.id) {
+      return NextResponse.json({
+        success: false,
+        error: 'User is not authenticated'
+      }, { status: 401 })
+    }
+    const { id } = await req.json()
+
+    if (!id) {
+      return NextResponse.json({
+        success: false,
+        error: 'Missing linkbox ID'
+      }, { status: 400 })
+    }
+    const deleted = await db.delete(linkbox)
+      .where(and(eq(linkbox.id, id), eq(linkbox.userId, userId.id)))
+      .returning()
+
+    return NextResponse.json({
+      success: true,
+      data: deleted
+    })
+  } catch (error) {
     return NextResponse.json({
       success: false,
       error: error.message

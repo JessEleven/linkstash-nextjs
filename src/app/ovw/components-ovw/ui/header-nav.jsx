@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   BoxIcon,
-  DashboardIcon
+  DashboardIcon,
+  RecycleIcon
 } from '../../resources/assets/home-nav-icons'
 import { StarIcon } from '../../resources/assets/linkboxes-icons'
 
@@ -23,6 +24,11 @@ const routes = [
     title: 'Favorite',
     icon: <StarIcon className='size-4' />,
     path: '/ovw/favorite'
+  },
+  {
+    title: 'Trash',
+    icon: <RecycleIcon />,
+    path: '/ovw/trash'
   }
 ]
 

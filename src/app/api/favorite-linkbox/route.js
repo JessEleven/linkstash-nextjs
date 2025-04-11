@@ -33,11 +33,11 @@ export async function GET (req) {
     }
 
     // The logged-in user's links are queried
-    const userFvaoriteLinks = await db.select().from(linkbox)
+    const userFavoriteLinks = await db.select().from(linkbox)
       .where(and(eq(linkbox.userId, userId.id), eq(linkbox.favorite, true)))
       .orderBy(orderByCondition)
 
-    if (userFvaoriteLinks.length <= 0) {
+    if (userFavoriteLinks.length <= 0) {
       return NextResponse.json({
         success: false,
         error: 'No links added to favorites'
@@ -50,10 +50,11 @@ export async function GET (req) {
       success: true,
       name: userId.name,
       email: userId.email,
-      data: userFvaoriteLinks
+      total: userFavoriteLinks.length,
+      data: userFavoriteLinks
     })
   } catch (error) {
-    // console.error('Error fetching user links')
+    // console.error('Error fetching user favorite links')
     return NextResponse.json({
       success: false,
       error: error.message
@@ -77,8 +78,7 @@ export async function PATCH (req) {
       }, { status: 401 })
     }
 
-    await db
-      .update(linkbox)
+    await db.update(linkbox)
       .set({ favorite })
       .where(and(eq(linkbox.id, id), eq(linkbox.userId, userId.id)))
 

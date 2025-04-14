@@ -146,3 +146,45 @@ export const TrashXIcon = (props) => (
     <path d='M10 12l4 4m0 -4l-4 4' />
   </svg>
 )
+
+export const ShieldCheckIcon = (props) => (
+  <svg
+    width={24}
+    height={24}
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth={2}
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    className='icon icon-tabler icons-tabler-outline icon-tabler-shield-check'
+    {...props}
+  >
+    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+    <path d='M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06' />
+    <path d='M15 19l2 2l4 -4' />
+  </svg>
+)
+
+export const CalendarIcon = (props) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth={2}
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    className='icon icon-tabler icons-tabler-outline icon-tabler-calendar'
+    {...props}
+  >
+    <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+    <path d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z' />
+    <path d='M16 3v4' />
+    <path d='M8 3v4' />
+    <path d='M4 11h16' />
+    <path d='M11 15h1' />
+    <path d='M12 15v3' />
+  </svg>
+)

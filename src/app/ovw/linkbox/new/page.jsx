@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { linkboxSchema } from '@/libs/validators/linkbox-schema'
+import { toast } from 'sonner'
 
 export default function NewPage () {
   const [serverError, setServerError] = useState(null)
@@ -76,7 +77,11 @@ export default function NewPage () {
             >
               Cancel
             </Link>
-            <button type='submit' className='ovw-btn-hover py-[7px] w-full text-center font-medium'>
+            <button
+              type='submit'
+              onClick={() => toast.success('The linkbox has been created')}
+              className='ovw-btn-hover py-[7px] w-full text-center font-medium'
+            >
               Save
             </button>
           </div>

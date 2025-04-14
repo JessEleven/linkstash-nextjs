@@ -107,7 +107,7 @@ export default function UserOptions ({ isRefreshing, sortBy, onRefresh, onLayout
 
         {pathname === '/ovw/linkbox' && (
           <Link href='/ovw/linkbox/new' className='ovw-btn-hover flex items-center gap-x-1 py-2'>
-            <PlusIcon /> <span className='hidden md:flex'>Add linkbox</span>
+            <PlusIcon /> <span className='hidden md:flex font-medium'>Add linkbox</span>
           </Link>
         )}
       </div>

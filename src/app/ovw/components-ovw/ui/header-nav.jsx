@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation'
 import {
   BoxIcon,
   DashboardIcon,
-  RecycleIcon
+  RecycleIcon,
+  SettingsIcon
 } from '../../resources/assets/home-nav-icons'
 import { StarIcon } from '../../resources/assets/linkboxes-icons'
 
@@ -29,6 +30,11 @@ const routes = [
     title: 'Trash',
     icon: <RecycleIcon />,
     path: '/ovw/trash'
+  },
+  {
+    title: 'Manage',
+    icon: <SettingsIcon />,
+    path: '/ovw/manage'
   }
 ]
 

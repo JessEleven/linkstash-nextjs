@@ -19,6 +19,7 @@ import moment from 'moment'
 import { getFavoriteLinkboxes, toggleFavorite } from '@/controllers/favorite-linkbox-controller'
 import { usePathname } from 'next/navigation'
 import { deleteLinkbox, getTrashedLinkboxes, restoreLinkbox } from '@/controllers/trash-linkbox-controller'
+import { toast } from 'sonner'
 
 export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing }) {
   const [links, setLinks] = useState([])
@@ -113,8 +114,10 @@ export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing })
                                           // Actualiza los links o favoritos dependiendo de la ruta
                                             if (pathname === '/ovw/linkbox') {
                                               setLinks((prev) => prev.filter((link) => link.id !== item.id))
+                                              toast.success('Linkbox moved to favorite')
                                             } else if (pathname === '/ovw/favorite') {
                                               setFavLinks((prev) => prev.filter((link) => link.id !== item.id))
+                                              toast.success('Link box is no longer favorites')
                                             }
                                           }
                                         })
@@ -136,6 +139,7 @@ export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing })
                                               setLinks((prev) => prev.filter((link) => link.id !== item.id))
                                             }
                                           })
+                                          toast.success('Linkbox moved to the trash')
                                         }}
                                       >
                                         <TrashIcon />
@@ -154,6 +158,7 @@ export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing })
                                               setTrashLinks((prev) => prev.filter((link) => link.id !== item.id))
                                             }
                                           })
+                                          toast.success('The linkbox has been restored')
                                         }}
                                       >
                                         <RestoreIcon />
@@ -168,6 +173,7 @@ export default function GetLinkboxes ({ refresh, layout, sortBy, isRefreshing })
                                               setTrashLinks((prev) => prev.filter((link) => link.id !== item.id))
                                             }
                                           })
+                                          toast.success('The linkbox has been removed')
                                         }}
                                       >
                                         <TrashXIcon />

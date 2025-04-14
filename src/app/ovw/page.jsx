@@ -1,4 +1,3 @@
-import SignOut from '@/components/UI/sign-out'
 import { auth } from '@/libs/auth'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -35,7 +34,6 @@ export default async function page () {
       <li>
         Session expires at: {formatDate(session?.expiresAt)}
       </li>
-      <SignOut />
     </div>
   )
 }

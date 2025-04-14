@@ -52,7 +52,7 @@ export default async function Nav () {
                     </Link>
                   </li>
                   <li>
-                    <SignOut />
+                    <SignOut text='Sign Out' />
                   </li>
                 </>
                 )

@@ -14,3 +14,15 @@
 .ovw-link-hover {
   @apply flex items-center gap-x-1.5 max-w-fit hover:text-emerald-500 transition-colors ease-in-out duration-200
 }
+
+.ovw-dash-card {
+  @apply p-5 bg-[#303038] rounded-md
+}
+
+.ovw-dash-icon {
+  @apply p-2 md:p-2.5 border rounded-full
+}
+
+.ovw-text-dash {
+  @apply text-sm md:text-lg font-bold
+}
